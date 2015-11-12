@@ -1,99 +1,109 @@
-function fetchActivePlayers(){
-	var playerlist = Rankings.find().fetch(),
-		activePlayers = [];
-
-	$.each(playerlist, function(index, value){
-		if( value.active === "active" ){
-			var player = {position: index, player: value.player};
-			activePlayers.push(player);
-		}
-	});
-
-	return activePlayers;
-}
-
-function updateRanking(oldRanking){
-	var rankingObj = Rankings.find({active: 'active'}).fetch(), 
-		newScores = [], 
-		changedPlayer = {},
-		goesUp = false;
-
-	$.each(rankingObj, function(index, value){
-		if( value.points !== oldRanking[index].points){
-			changedPlayer = {newpoints: value.points, oldposition: oldRanking[index].position};
-			
-			if( value.points > oldRanking[index].points){
-				goesUp = true;
-			}	
-		}
-
-		var score = {points: value.points, player: value.player};
-		newScores.push(score);
-	});
-
-	newScores.sort(function(a,b){
-		if (a.points < b.points){ return 1; }
-  		if (a.points > b.points){ return -1;}
-  		return 0;
-	});
-
-	$.each(newScores, function(index, value){
-		if( value.points === changedPlayer.newpoints ){
-			changedPlayer.newposition = index+1;
-			return false;
-		}
-	});
-
-	var topPosition;
-	if( goesUp === true ){
-		topPosition = Rankings.find({position: {$gte: changedPlayer.newposition, $lt: changedPlayer.oldposition}}).fetch();
-	}	else{
-		topPosition = Rankings.find({position: {$gt: changedPlayer.oldposition, $lte: changedPlayer.newposition}}).fetch();
-	}
-
-	$.each(topPosition, function(index, value){	
-		var newRanking;
-		if( goesUp === true){
-			newRanking = (value.position+1);
-		}	else{
-			newRanking = (value.position-1);
-		}
-
-		Meteor.call("updateRanking", value._id, newRanking);
-	});
-
-	$.each(newScores, function(index, value){
-		if( value.points === changedPlayer.newpoints ){
-			var playerObj = Rankings.findOne({player: value.player}),
-				newRanking = index+1;
-
-			Meteor.call("updateRanking", playerObj._id, newRanking);
-		}	
-	});
-}
-
-function awardPoints(winner, loser){
-	var pointList = [{position: 1, points: 14},{position: 2, points: 10},{position: 3, points: 8},{position: 4, points: 6},{position: 5, points: 4},{position: 6, points: 3},{position: 7, points: 2}];
-
-	var loserObj = Rankings.findOne({player: loser}),
-		loserPosition = loserObj.position,
-		pointsToAdd = 1;
-
-	$.each(pointList, function(index, value){
-		if( value.position === loserPosition ){
-			pointsToAdd = value.points;
-		}
-	});
-
-	return pointsToAdd;
-}
-
 Meteor.subscribe("matches");
 Meteor.subscribe("rankings");
 
+var Players = {
+	fetchActivePlayers: function(){
+		var playerlist = Rankings.find().fetch(),
+		activePlayers = [];
+
+		$.each(playerlist, function(index, value){
+			if( value.active === "active" ){
+				var player = {position: index, player: value.player};
+				activePlayers.push(player);
+			}
+		});
+
+		return activePlayers;
+	},
+	pointList: [
+		{position: 1, points: 14},
+		{position: 2, points: 10},
+		{position: 3, points: 8},
+		{position: 4, points: 6},
+		{position: 5, points: 4},
+		{position: 6, points: 3},
+		{position: 7, points: 2}
+	],
+	awardPoints: function(winner, loser){
+		var loserObj = Rankings.findOne({player: loser}),
+			loserPosition = loserObj.position,
+			pointsToAdd = 1;
+
+		$.each(this.pointList, function(index, value){
+			if( value.position === loserPosition ){
+				pointsToAdd = value.points;
+			}
+		});
+
+		return pointsToAdd;
+	}
+};
+
+var Ranks = {
+	newScores: [],
+	changedPlayer: {},
+	goesUp: false,
+	updateRanking: function(oldRanking){
+		var rankingObj = Rankings.find({active: 'active'}).fetch();
+
+		$.each(rankingObj, function(index, value){
+			if( value.points !== oldRanking[index].points){
+				this.changedPlayer = {newpoints: value.points, oldposition: oldRanking[index].position};
+				
+				if( value.points > oldRanking[index].points){
+					this.goesUp = true;
+				}	
+			}
+
+			var score = {points: value.points, player: value.player};
+			this.newScores.push(score);
+		});
+
+		this.newScores.sort(function(a,b){
+			if (a.points < b.points){ return 1; }
+	  		if (a.points > b.points){ return -1;}
+	  		return 0;
+		});
+
+		$.each(this.newScores, function(index, value){
+			if( value.points === this.changedPlayer.newpoints ){
+				this.changedPlayer.newposition = index+1;
+				return false;
+			}
+		});
+
+		var topPosition;
+		if( this.goesUp === true ){
+			topPosition = Rankings.find({position: {$gte: changedPlayer.newposition, $lt: changedPlayer.oldposition}}).fetch();
+		}	else{
+			topPosition = Rankings.find({position: {$gt: changedPlayer.oldposition, $lte: changedPlayer.newposition}}).fetch();
+		}
+
+		$.each(topPosition, function(index, value){	
+			var newRanking;
+			if( this.goesUp === true){
+				newRanking = (value.position+1);
+			}	else{
+				newRanking = (value.position-1);
+			}
+
+			Meteor.call("updateRanking", value._id, newRanking);
+		});
+
+		$.each(this.newScores, function(index, value){
+			if( value.points === this.changedPlayer.newpoints ){
+				var playerObj = Rankings.findOne({player: value.player}),
+					newRanking = index+1;
+
+				Meteor.call("updateRanking", playerObj._id, newRanking);
+			}	
+		});
+	}
+};
+
 Template.body.helpers({
 	activePlayers: function(){
-		return fetchActivePlayers();
+		return Players.fetchActivePlayers();
 	},
 	ranking: function(){
 		return Rankings.find({active: "active"}, {sort: {position: 1}});
@@ -133,8 +143,8 @@ Template.body.events({
 			loser = homePlayer;
 		}
 
-		//ranking updaten
-		var pointsToAdd = awardPoints(winner, loser);
+		//punten geven
+		var pointsToAdd = Players.awardPoints(winner, loser);
 
 		Meteor.call("addMatch", homePlayer, homeScore, awayPlayer, awayScore, pointsToAdd, winner);
 
@@ -148,7 +158,7 @@ Template.body.events({
 		Meteor.call("incrementPoints", playerObj._id, pointsToAdd);
 
 		//ranking updaten
-		updateRanking(oldRanking);
+		Ranks.updateRanking(oldRanking);
 	},
 
 	'change select': function(event){
@@ -166,10 +176,8 @@ Template.body.events({
 		var filterQuery;
 
 		if( fp === "Alle wedstrijden" || fp === undefined){
-			// return Matches.find({}, {sort: {date: -1}});
 			filterQuery = {}, {sort: {date: -1}};
 		}	else{
-			// return Matches.find({ $or: [{homePlayer: fp}, {awayPlayer: fp}] });
 			filterQuery = { $or: [{homePlayer: fp}, {awayPlayer: fp}] };
 		}
 
@@ -190,7 +198,7 @@ Template.match.events({
 		Meteor.call("decrementPoints", playerObj._id, matchObj.pointsToAdd);
 
 		//ranking updaten
-		updateRanking(oldRanking);
+		Ranks.updateRanking(oldRanking);
 
 		//match verwijderen
 		Meteor.call("removeMatch", this._id );
