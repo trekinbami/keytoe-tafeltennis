@@ -1,0 +1,136 @@
+/* -------------------------------------------
+	Normalize
+--------------------------------------------*/
+@import 'vendor/normalize.scss';
+
+/* -------------------------------------------
+	Third Party
+--------------------------------------------*/
+@import 'vendor/include-media/dist/_include-media.scss';
+@import 'vendor/fontawesome/font-awesome.scss';
+
+/* -------------------------------------------
+	Partials
+--------------------------------------------*/
+@import 'partials/functions.scss';
+@import 'partials/mixins.scss';
+@import 'partials/fonts.scss';
+@import 'partials/vars.scss';
+@import 'partials/general.scss';
+@import 'partials/forms.scss';
+
+/* -------------------------------------------
+	Layout
+--------------------------------------------*/
+.container{
+	@include media(">=1280px"){width:80%; max-width:1440px;}; 
+	@include media("<1280px"){width:90%;}
+	margin:100px auto;
+
+	> .w-33, > .w-66{
+		@include media("<1024px"){width:100%; float: none;}
+	}
+}
+.block{
+	background:#FFFFFF;
+	box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.18);
+	overflow: hidden;
+	margin-bottom:20px;
+}
+	.block__header{
+		padding:25px;
+		background: #FFFFFF;
+		box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.08);
+		position: relative;
+
+		h2{margin:0;}
+	}
+
+	.header-add{
+		position: absolute;
+		right:25px;
+		top:50%;
+		transform:translateY(-50%);
+	}
+
+	.block__inner{padding:30px;}
+
+/* -------------------------------------------
+	Ranglijst
+--------------------------------------------*/
+.ranglijst__table{
+	tr:first-child td{border:0;}
+	
+	tr td:first-child{padding-left:25px;}
+	tr td:last-child{padding-right:25px; text-align: right;}
+
+	td{line-height: 40px; border-top: 1px solid $gray;}
+}
+
+/* -------------------------------------------
+	Uitslag invoeren
+--------------------------------------------*/
+.flex-cnt{
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-content: stretch;
+
+	@include media(">=768px"){flex-direction: row;}
+	@include media("<768px"){flex-direction: column;}
+
+	> *{
+		flex-grow:1; 
+		
+		@include media(">=768px"){margin-right:10px;}
+		@include media("<768px"){margin-bottom:10px;}
+	}
+
+	.mock-select:last-of-type{margin-right:0;}
+}
+
+	
+.hyphen{
+	text-align: center; 
+	line-height: 40px;
+
+	@include media(">=768px"){display: inline-block; vertical-align: middle; max-width:50px;}
+	@include media("<768px"){display: block; width:100%;}
+}
+
+
+/* -------------------------------------------
+	Uitslagen
+--------------------------------------------*/
+.uitslagen__table tbody td{
+	height:40px;
+	border-right:1px solid $gray;
+	border-top:1px solid $gray;
+
+	@include media(">=768px"){padding:0 25px;}
+	@include media("<768px"){padding:0 10px;}
+
+	&:first-child{
+		width:120px;
+		@include media(">=768px"){padding-left:25px; width:120px; }
+		@include media("<768px"){padding-left:10px; width:60px;}
+	}
+	&:last-child{width:25px;}
+	&.score{
+		background:$gray; 
+		
+		text-align: center;
+		padding:0;
+		font-weight: bold;
+
+		@include media(">=768px"){width:50px; }
+		@include media("<768px"){width:15px;}
+
+		&.connector{width:20px;}
+	}
+	&.player{text-align: left; width:calc(50% - 158px);}
+	&.player.away{text-align: right;}
+}
+
+.uitslagen__table tfoot td{border-top:1px solid $gray;}
+.delete-match i{color:$error;}

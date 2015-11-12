@@ -1,0 +1,82 @@
+html{box-sizing: border-box;}
+	*,*:before,*:after{box-sizing:inherit;}
+
+body{
+	font-weight: normal;
+	@include no-room;
+	color: $textPrimary;
+	font-family: $readStack;
+	font-size:em(12,16);
+	background: $beige;
+	}
+	h1, h2, h3, h4, h5, h6{font-family: $titleStack;}
+
+	img{max-width:100%;}
+	a{text-decoration: none; color:$textPrimary;}
+	figure{margin:0; padding:0;}
+	.break{clear: both;}
+	.clearfix:after {
+	  content: "";
+	  display: table;
+	  clear: both;
+	}
+
+	ul{@include no-list;}
+	.hidden{
+		visibility: hidden; 
+		opacity: 0; 
+		position: absolute; 
+		left:-9999px;
+		}
+
+	p{ 
+		line-height: 150%;
+	}
+
+	.f-right{float: right;}
+	.f-left{float: left;}
+/* -------------------------------------------
+	Layout
+--------------------------------------------*/
+.wrapper{
+	margin:0 auto; 
+	position: relative;
+	@include media(">desktop"){ width:1024px; }
+	@include media(">=phone", "<=desktop") { width: 90%; }
+	}
+
+
+/* -------------------------------------------
+	Standaard blocks
+--------------------------------------------*/
+.block-cnt{
+	@include clearfix;
+	margin:0 -10px;
+	}
+	.w-10{width:10%; }
+	.w-15{width:15%; }
+	.w-20{width:20%; }
+	.w-25{width:25%; }
+	.w-30{width:30%; }
+	.w-33{ width:33.3333333%; }
+	.w-35{ width:35%; }
+	.w-40{ width:40%; }
+	.w-45{ width:45%; }
+	.w-50{ width:50%; }
+	.w-55{ width:55%; }
+	.w-60{ width:60%;}
+	.w-65{ width:65%;}
+	.w-66{ width:66.6666666%;}
+	.w-70{ width:70%;}
+	.w-75{ width:75%;}
+	.w-80{ width:80%;}
+	.w-85{ width:85%;}
+	.w-90{ width:90%;}
+	.w-95{ width:95%;}
+	.w-100{ width:100%;}
+
+	*[class*=" w-"], 
+	*[class^="w-"]{
+		float: left;
+		padding:10px;
+	}

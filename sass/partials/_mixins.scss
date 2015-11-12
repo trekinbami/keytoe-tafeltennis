@@ -1,0 +1,40 @@
+@mixin no-room{
+	margin:0;
+	padding:0;
+	border:0;
+	}
+
+@mixin no-list{
+	list-style: none;
+	margin:0;
+	padding:0;
+	}
+
+@mixin hidden{
+	visibility: hidden;
+	position: absolute;
+	left:-9999em;
+}
+
+@mixin full-bg{
+	background-size:cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+@mixin full-absolute{
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+

@@ -1,0 +1,141 @@
+<head>
+  <title>tafeltennis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="container clearfix">
+	<div class="w-33">
+		<article class="block ranglijst">
+			<header class="block__header">
+				<h2>Ranglijst</h2>
+				<a class="more-info header-add" href="#">Info</a>
+			</header>
+			<table class="ranglijst__table" cellspacing="0" cellpadding="0" width="100%">
+				<tbody>
+					{{#each ranking}}
+						{{>rank}}
+					{{/each}}
+				</tbody>
+			</table>
+		</article>
+	</div>
+	<div class="w-66">
+		<form class="block uitslag-invoeren">
+			<fieldset>
+				<header class="block__header">
+					<h2>Voer uitslag in</h2>
+					<button type="submit" class="btn header-add add-match">Invoeren</button>
+				</header>
+				<section class="block__inner flex-cnt">
+					<label class="mock-select" for="playerOne">
+						<select id="playerOne" class="player-select">
+							{{#each activePlayers}}
+								{{>player}}
+							{{/each}}
+						</select>
+						<span class="mock-std">Naam speler 1</span>
+					</label>
+					<label class="mock-select score" for="scoreOne">
+						<select id="scoreOne">
+							<option>0</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<span class="mock-std">0</span>
+					</label>
+					<span class="hyphen"> - </span>
+					<label class="mock-select score" for="scoreTwo">
+						<select id="scoreTwo">
+							<option>0</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<span class="mock-std">0</span>
+					</label>
+					<label class="mock-select" for="playerTwo">
+						<select id="playerTwo" class="player-select">
+							{{#each activePlayers}}
+								{{>player}}
+							{{/each}}
+						</select>
+						<span class="mock-std">Naam speler 2</span>
+					</label>
+				</section>
+			</fieldset>
+		</form>
+
+		<form class="block uitslagen">
+			<header class="block__header">
+				<h2>Uitslagen</h2>
+				<label class="mock-select header-add" for="playerFilter">
+					<span class="mock-std">Filter op speler</span>
+					<select id="playerFilter" class="player-select filter-player">
+						<option selected>Alle wedstrijden</option>
+						{{#each activePlayers}}
+							{{>player}}
+						{{/each}}
+					</select>
+				</label>
+			</header>
+			<table class="uitslagen__table" width="100%" cellspacing="0" cellpadding="0">
+				{{>Items}}
+			</table>
+		</form>
+	</div>
+</div>
+</body>
+
+<!-- <template name="match">
+	<tr>
+		<td class="date">{{prettifyDate date}}</td>
+		<td class="player">{{homePlayer}}</td>
+		<td class="score">{{homeScore}}</td>
+		<td class="score connector">-</td>
+		<td class="score">{{awayScore}}</td>
+		<td class="player away">{{awayPlayer}}</td>
+		<td class="delete"><a href="#" class="delete-match"><i class="fa fa-close"></i></a></td>
+	</tr>
+</template> -->
+
+<template name="match">
+	<tr>
+		<td class="date">{{prettifyDate date}}</td>
+		<td class="player">{{homePlayer}}</td>
+		<td class="score">{{homeScore}}</td>
+		<td class="score connector">-</td>
+		<td class="score">{{awayScore}}</td>
+		<td class="player away">{{awayPlayer}}</td>
+		<td class="delete"><a href="#" class="delete-match"><i class="fa fa-close"></i></a></td>
+	</tr>
+</template>
+
+<template name="player">
+	<option>{{player}}</option>
+</template>
+
+<template name="rank">
+	<tr>
+		<td class="strijder">{{position}}. {{player}}</td>
+		<td class="punten">{{points}}</td>
+	</tr>
+</template>
+
+<template name="Layout">  
+
+</template>
+
+<template name="Items">
+	<tfoot>
+		<tr>
+			<td colspan="7">
+				{{> pagesNav}}
+			</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		{{> pages}}
+	</tbody>	
+</template>

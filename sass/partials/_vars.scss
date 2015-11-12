@@ -1,0 +1,39 @@
+/* -------------------------------------------
+	Fonts
+--------------------------------------------*/
+$baseFontSize: 16px;
+$readStack: "Merriweather", "Helvetica", "Georgia", "Times", serif;
+$titleStack: "Merriweather", "Helvetica", "Arial", sans-serif;
+$btnStack: "Arial", sans-serif;
+
+/* -------------------------------------------
+	Colours
+--------------------------------------------*/
+$textPrimary: #4d4d4d;
+$beige: #EDE2D2;
+$gray: #EFEFEF;
+$error: #e60e2d;
+$border: #DBDBDB;
+$swift: cubic-bezier(0.55,0,0.1,1);
+$cta: #504D49;
+$even: #FAFAFA;
+
+/* -------------------------------------------
+	Media Queries (include-media)
+--------------------------------------------*/
+$breakpoints: (
+  'phone': 320px,
+  'tablet': 768px,
+  'desktop': 1024px,
+  'large': 1920px
+) !default;
+
+$media-expressions: (
+  'screen': 'screen',
+  'print': 'print',
+  'handheld': 'handheld',
+  'landscape': '(orientation: landscape)',
+  'portrait': '(orientation: portrait)',
+  'retina2x': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)',
+  'retina3x': '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi)'
+) !default;
